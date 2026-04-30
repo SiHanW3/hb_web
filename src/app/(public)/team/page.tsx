@@ -4,19 +4,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import CtaBand from "@/components/ui/CtaBand";
 import TextReveal from "@/components/ui/TextReveal";
 import ScrollRevealSection from "@/components/ui/ScrollRevealSection";
-
-const members = [
-  {
-    name: "David Chen",
-    role: "CEO & Co-Founder",
-    bio: "With over 15 years in luxury packaging and brand strategy, David founded HuiBao to bridge the gap between world-class design and scalable manufacturing. He leads company vision, key partnerships, and ensures every project aligns with HuiBao's relentless quality standards. Before HuiBao, he held senior roles at two leading packaging firms in Shenzhen, where he built deep expertise in structural engineering and premium finishing techniques.",
-  },
-  {
-    name: "Sarah Liu",
-    role: "Creative Director",
-    bio: "Sarah oversees all design output at HuiBao, from initial concept sketches to production-ready artwork. A graduate of the Central Academy of Fine Arts with a masters in visual communication, she brings a rare blend of artistic sensibility and technical rigour. Her portfolio spans luxury cosmetics, spirits, and consumer electronics packaging for brands across Europe and Asia. She leads a team of four designers and is passionate about sustainable material innovation.",
-  },
-];
+import { prisma } from "@/lib/prisma";
 
 const values = [
   {
@@ -36,7 +24,10 @@ const values = [
   },
 ];
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  const members = await prisma.teamMember.findMany({
+    orderBy: { order: "asc" },
+  });
   return (
     <main>
       {/* Hero */}
@@ -98,11 +89,13 @@ export default function TeamPage() {
                         {member.name}
                       </h2>
                     </AnimateIn>
-                    <AnimateIn delay={0.35} blur>
-                      <p className="text-base text-body leading-relaxed">
-                        {member.bio}
-                      </p>
-                    </AnimateIn>
+                    {member.bio && (
+                      <AnimateIn delay={0.35} blur>
+                        <p className="text-base text-body leading-relaxed">
+                          {member.bio}
+                        </p>
+                      </AnimateIn>
+                    )}
                   </div>
                 </div>
               </ScrollRevealSection>

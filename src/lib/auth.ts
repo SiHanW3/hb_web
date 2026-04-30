@@ -1,5 +1,15 @@
+import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
+
+export async function getSession() {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("admin_session");
+  if (!session?.value) return null;
+  const user = await prisma.user.findUnique({ where: { id: session.value } });
+  if (!user) return null;
+  return { id: user.id, email: user.email, name: user.name };
+}
 
 export async function verifyCredentials(email: string, password: string) {
   const user = await prisma.user.findUnique({ where: { email } });
