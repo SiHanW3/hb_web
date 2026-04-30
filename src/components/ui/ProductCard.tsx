@@ -55,11 +55,12 @@ export default function ProductCard({
         ease: smooth,
       }}
       style={{ perspective: 800 }}
+      className="h-full"
     >
-      <Link href={`/our-work/${categorySlug}/${id}`}>
+      <Link href={`/our-work/${categorySlug}/${id}`} className="h-full block">
         <motion.div
           ref={cardRef}
-          className="bg-surface-card rounded-xl overflow-hidden cursor-pointer"
+          className="h-full bg-surface-card rounded-xl overflow-hidden cursor-pointer flex flex-col"
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           whileHover={{
             y: -6,
@@ -87,7 +88,7 @@ export default function ProductCard({
               </div>
             )}
           </div>
-          <div className="p-6">
+          <div className="p-6 flex-1">
             <h3 className="font-[family-name:var(--font-display)] text-xl text-ink tracking-tight mb-2">
               {title}
             </h3>
