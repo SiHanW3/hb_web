@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import SocialIcons from "@/components/ui/SocialIcons";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,22 +20,45 @@ const serviceLinks = [
   { href: "/our-work/label", label: "Label" },
 ];
 
+const columns = [
+  { delay: 0 },
+  { delay: 0.1 },
+  { delay: 0.2 },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-surface-dark text-on-dark-soft">
       <div className="max-w-[1200px] mx-auto px-6 lg:px-10 py-16">
         <div className="flex flex-col md:flex-row justify-between gap-12 mb-12">
-          <div className="max-w-[300px]">
-            <h3 className="font-[family-name:var(--font-display)] text-[28px] text-on-dark tracking-tight mb-4">
+          <motion.div
+            className="max-w-[300px]"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, ease }}
+          >
+            <motion.h3
+              className="font-[family-name:var(--font-display)] text-[28px] text-on-dark tracking-tight mb-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, ease }}
+            >
               HuiBao
-            </h3>
+            </motion.h3>
             <p className="text-sm leading-relaxed">
               Design-led packaging solutions for brands that stand out.
             </p>
-          </div>
+          </motion.div>
 
           <div className="flex flex-wrap gap-16">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: columns[0].delay, ease }}
+            >
               <h4 className="text-[11px] font-medium text-muted-soft uppercase tracking-[1.5px] mb-3">
                 Navigation
               </h4>
@@ -43,9 +71,14 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: columns[1].delay, ease }}
+            >
               <h4 className="text-[11px] font-medium text-muted-soft uppercase tracking-[1.5px] mb-3">
                 Services
               </h4>
@@ -58,9 +91,14 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: columns[2].delay, ease }}
+            >
               <h4 className="text-[11px] font-medium text-muted-soft uppercase tracking-[1.5px] mb-3">
                 Contact
               </h4>
@@ -72,15 +110,22 @@ export default function Footer() {
               <div className="mt-4">
                 <SocialIcons variant="dark" size={18} />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
-        <div className="border-t border-surface-dark-elevated pt-6">
+        <motion.div
+          className="border-t border-surface-dark-elevated pt-6"
+          initial={{ opacity: 0, scaleX: 0 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.8, delay: 0.3, ease }}
+          style={{ transformOrigin: "left" }}
+        >
           <p className="text-[13px] text-muted-soft">
             &copy; {new Date().getFullYear()} HuiBao. All rights reserved.
           </p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

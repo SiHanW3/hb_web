@@ -2,6 +2,10 @@ import { PencilRuler, ShieldCheck, Rocket } from "lucide-react";
 import AnimateIn from "@/components/ui/AnimateIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CtaBand from "@/components/ui/CtaBand";
+import TextReveal from "@/components/ui/TextReveal";
+import ScrollRevealSection from "@/components/ui/ScrollRevealSection";
+import ProcessTimeline from "./ProcessTimeline";
+import GlobalPresenceMap from "./GlobalPresenceMap";
 
 const steps = [
   {
@@ -49,27 +53,37 @@ export default function AboutPage() {
     <main>
       {/* Hero */}
       <section className="py-28 md:py-36 px-6 lg:px-10">
-        <AnimateIn className="max-w-[800px] mx-auto text-center">
-          <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-4 block">
-            About HuiBao
-          </span>
-          <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-6xl lg:text-7xl text-ink tracking-tight leading-[1.1]">
-            Crafting Brand Experiences Through Packaging
-          </h1>
-          <p className="mt-6 text-lg text-body max-w-[560px] mx-auto leading-relaxed">
-            We partner with brands worldwide to create packaging that protects
-            products, tells stories, and sparks connection.
-          </p>
-        </AnimateIn>
+        <div className="max-w-[800px] mx-auto text-center">
+          <AnimateIn direction="left" amount={16} blur>
+            <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-4 block">
+              About HuiBao
+            </span>
+          </AnimateIn>
+          <TextReveal
+            text="Crafting Brand Experiences Through Packaging"
+            as="h1"
+            className="font-[family-name:var(--font-display)] text-5xl md:text-6xl lg:text-7xl text-ink tracking-tight leading-[1.1]"
+            delay={0.1}
+            staggerDelay={0.05}
+          />
+          <AnimateIn delay={0.6} blur>
+            <p className="mt-6 text-lg text-body max-w-[560px] mx-auto leading-relaxed">
+              We partner with brands worldwide to create packaging that protects
+              products, tells stories, and sparks connection.
+            </p>
+          </AnimateIn>
+        </div>
       </section>
 
       {/* Mission & Vision */}
       <section className="py-24 px-6 lg:px-10">
         <div className="max-w-[1200px] mx-auto space-y-20">
           {/* Mission */}
-          <AnimateIn className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="aspect-[4/3] rounded-2xl bg-surface-soft" />
-            <div>
+          <ScrollRevealSection className="grid md:grid-cols-2 gap-12 items-center">
+            <AnimateIn clipReveal direction="left" amount={0}>
+              <div className="aspect-[4/3] rounded-2xl bg-surface-soft" />
+            </AnimateIn>
+            <AnimateIn delay={0.2} direction="right" amount={32} blur>
               <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-3 block">
                 Our Mission
               </span>
@@ -83,13 +97,15 @@ export default function AboutPage() {
                 tool that builds trust, drives sales, and creates memorable
                 unboxing moments.
               </p>
-            </div>
-          </AnimateIn>
+            </AnimateIn>
+          </ScrollRevealSection>
 
           {/* Vision */}
-          <AnimateIn className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="aspect-[4/3] rounded-2xl bg-surface-soft md:order-2" />
-            <div className="md:order-1">
+          <ScrollRevealSection className="grid md:grid-cols-2 gap-12 items-center">
+            <AnimateIn clipReveal direction="right" amount={0} className="md:order-2">
+              <div className="aspect-[4/3] rounded-2xl bg-surface-soft" />
+            </AnimateIn>
+            <AnimateIn delay={0.2} direction="left" amount={32} blur className="md:order-1">
               <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-3 block">
                 Our Vision
               </span>
@@ -101,8 +117,8 @@ export default function AboutPage() {
                 design converge — where every package leaving our facility
                 minimises environmental impact while maximising brand impact.
               </p>
-            </div>
-          </AnimateIn>
+            </AnimateIn>
+          </ScrollRevealSection>
         </div>
       </section>
 
@@ -114,23 +130,7 @@ export default function AboutPage() {
           description="A proven four-step process that turns your vision into tangible, shelf-ready packaging."
         />
 
-        <div className="max-w-[1200px] mx-auto mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, i) => (
-            <AnimateIn key={step.num} delay={i * 0.1} direction={i % 2 === 0 ? "left" : "right"} amount={40}>
-              <div className="bg-canvas rounded-2xl p-8 h-full">
-                <span className="font-[family-name:var(--font-display)] text-5xl text-primary/20 block mb-4">
-                  {step.num}
-                </span>
-                <h3 className="font-[family-name:var(--font-display)] text-xl text-ink tracking-tight mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-body leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-            </AnimateIn>
-          ))}
-        </div>
+        <ProcessTimeline steps={steps} />
       </section>
 
       {/* Why HuiBao */}
@@ -143,7 +143,14 @@ export default function AboutPage() {
 
         <div className="max-w-[1200px] mx-auto mt-16 grid md:grid-cols-3 gap-6">
           {features.map((feat, i) => (
-            <AnimateIn key={feat.title} delay={i * 0.1}>
+            <AnimateIn
+              key={feat.title}
+              delay={i * 0.12}
+              direction={i === 0 ? "left" : i === 2 ? "right" : "up"}
+              amount={40}
+              blur
+              rotate={i === 0 ? -2 : i === 2 ? 2 : 0}
+            >
               <div className="border border-hairline rounded-2xl p-8 h-full">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
                   <feat.icon className="w-5 h-5 text-primary" />
@@ -157,6 +164,18 @@ export default function AboutPage() {
               </div>
             </AnimateIn>
           ))}
+        </div>
+      </section>
+
+      {/* Global Presence */}
+      <section className="py-24 px-6 lg:px-10 bg-surface-soft">
+        <SectionHeader
+          eyebrow="Global Presence"
+          title="Where We Operate"
+          description="With offices in China and supply chain partners across Southeast Asia, we deliver world-class packaging wherever your brand needs it."
+        />
+        <div className="mt-16">
+          <GlobalPresenceMap />
         </div>
       </section>
 

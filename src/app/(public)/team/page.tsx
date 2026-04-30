@@ -2,16 +2,20 @@ import { Heart, Users, Lightbulb } from "lucide-react";
 import AnimateIn from "@/components/ui/AnimateIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CtaBand from "@/components/ui/CtaBand";
+import TextReveal from "@/components/ui/TextReveal";
+import ScrollRevealSection from "@/components/ui/ScrollRevealSection";
 
 const members = [
-  { name: "David Chen", role: "CEO" },
-  { name: "Sarah Liu", role: "Creative Director" },
-  { name: "James Wang", role: "Production Manager" },
-  { name: "Emily Zhang", role: "Senior Designer" },
-  { name: "Michael Li", role: "QC Lead" },
-  { name: "Anna Zhou", role: "Client Relations" },
-  { name: "Kevin Wu", role: "Structural Engineer" },
-  { name: "Lisa Tang", role: "Graphic Designer" },
+  {
+    name: "David Chen",
+    role: "CEO & Co-Founder",
+    bio: "With over 15 years in luxury packaging and brand strategy, David founded HuiBao to bridge the gap between world-class design and scalable manufacturing. He leads company vision, key partnerships, and ensures every project aligns with HuiBao's relentless quality standards. Before HuiBao, he held senior roles at two leading packaging firms in Shenzhen, where he built deep expertise in structural engineering and premium finishing techniques.",
+  },
+  {
+    name: "Sarah Liu",
+    role: "Creative Director",
+    bio: "Sarah oversees all design output at HuiBao, from initial concept sketches to production-ready artwork. A graduate of the Central Academy of Fine Arts with a masters in visual communication, she brings a rare blend of artistic sensibility and technical rigour. Her portfolio spans luxury cosmetics, spirits, and consumer electronics packaging for brands across Europe and Asia. She leads a team of four designers and is passionate about sustainable material innovation.",
+  },
 ];
 
 const values = [
@@ -36,37 +40,74 @@ export default function TeamPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="py-28 md:py-36 px-6 lg:px-10">
-        <AnimateIn className="max-w-[800px] mx-auto text-center">
-          <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-4 block">
-            Our Team
-          </span>
-          <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-6xl lg:text-7xl text-ink tracking-tight leading-[1.1]">
-            The People Behind Every Package
-          </h1>
-          <p className="mt-6 text-lg text-body max-w-[560px] mx-auto leading-relaxed">
-            A multidisciplinary team of designers, engineers, and strategists
-            united by one goal — exceptional packaging.
-          </p>
-        </AnimateIn>
+      <section className="min-h-[calc(100vh-88px)] flex items-center px-6 lg:px-10">
+        <div className="max-w-[800px] mx-auto text-center">
+          <AnimateIn direction="left" amount={16} blur>
+            <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-4 block">
+              Our Team
+            </span>
+          </AnimateIn>
+          <TextReveal
+            text="The People Behind Every Package"
+            as="h1"
+            className="font-[family-name:var(--font-display)] text-5xl md:text-6xl lg:text-7xl text-ink tracking-tight leading-[1.1]"
+            delay={0.1}
+            staggerDelay={0.05}
+          />
+          <AnimateIn delay={0.6} blur>
+            <p className="mt-6 text-lg text-body max-w-[560px] mx-auto leading-relaxed">
+              A multidisciplinary team of designers, engineers, and strategists
+              united by one goal — exceptional packaging.
+            </p>
+          </AnimateIn>
+        </div>
       </section>
 
-      {/* Team Grid */}
+      {/* Team Members - Zigzag */}
       <section className="py-24 px-6 lg:px-10 bg-surface-soft">
-        <div className="max-w-[1200px] mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {members.map((m, i) => (
-            <AnimateIn key={m.name} delay={i * 0.08} amount={32} spring>
-              <div className="bg-canvas rounded-2xl overflow-hidden">
-                <div className="aspect-[3/4] bg-surface-card" />
-                <div className="p-6">
-                  <h3 className="font-[family-name:var(--font-display)] text-lg text-ink tracking-tight">
-                    {m.name}
-                  </h3>
-                  <p className="text-sm text-muted mt-1">{m.role}</p>
+        <div className="max-w-[1200px] mx-auto space-y-20">
+          {members.map((member, i) => {
+            const imageFirst = i % 2 === 0;
+            return (
+              <ScrollRevealSection key={member.name}>
+                <div
+                  className={`grid md:grid-cols-2 gap-10 lg:gap-16 items-center ${
+                    !imageFirst ? "md:[direction:rtl]" : ""
+                  }`}
+                >
+                  {/* Photo */}
+                  <AnimateIn
+                    direction={imageFirst ? "left" : "right"}
+                    amount={40}
+                    blur
+                    delay={0.1}
+                    className={!imageFirst ? "md:[direction:ltr]" : ""}
+                  >
+                    <div className="aspect-[3/4] rounded-2xl bg-surface-card overflow-hidden" />
+                  </AnimateIn>
+
+                  {/* Text */}
+                  <div className={`flex flex-col justify-center ${!imageFirst ? "md:[direction:ltr]" : ""}`}>
+                    <AnimateIn delay={0.15} blur>
+                      <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase mb-3 block">
+                        {member.role}
+                      </span>
+                    </AnimateIn>
+                    <AnimateIn delay={0.25} blur>
+                      <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl text-ink tracking-tight mb-4">
+                        {member.name}
+                      </h2>
+                    </AnimateIn>
+                    <AnimateIn delay={0.35} blur>
+                      <p className="text-base text-body leading-relaxed">
+                        {member.bio}
+                      </p>
+                    </AnimateIn>
+                  </div>
                 </div>
-              </div>
-            </AnimateIn>
-          ))}
+              </ScrollRevealSection>
+            );
+          })}
         </div>
       </section>
 
@@ -80,7 +121,13 @@ export default function TeamPage() {
 
         <div className="max-w-[1200px] mx-auto mt-16 grid md:grid-cols-3 gap-6">
           {values.map((v, i) => (
-            <AnimateIn key={v.title} delay={i * 0.1}>
+            <AnimateIn
+              key={v.title}
+              delay={i * 0.12}
+              direction={i === 0 ? "left" : i === 2 ? "right" : "up"}
+              amount={40}
+              blur
+            >
               <div className="border border-hairline rounded-2xl p-8 h-full">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
                   <v.icon className="w-5 h-5 text-primary" />

@@ -5,6 +5,9 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import CtaBand from "@/components/ui/CtaBand";
 import HeroAnimation from "@/components/ui/HeroAnimation";
 import CountUp from "@/components/ui/CountUp";
+import TextReveal from "@/components/ui/TextReveal";
+import ScrollRevealSection from "@/components/ui/ScrollRevealSection";
+
 import { prisma } from "@/lib/prisma";
 
 const features = [
@@ -13,18 +16,21 @@ const features = [
     title: "Design-Led Approach",
     description:
       "Every package starts with thoughtful design, ensuring your brand story shines through every detail.",
+    direction: "left" as const,
   },
   {
     icon: Gem,
     title: "Premium Quality",
     description:
       "We source the finest materials and apply rigorous quality control to ensure every piece meets luxury standards.",
+    direction: "up" as const,
   },
   {
     icon: Target,
     title: "Brand-Focused",
     description:
       "We immerse ourselves in your brand identity to create packaging that amplifies your market positioning.",
+    direction: "right" as const,
   },
 ];
 
@@ -53,6 +59,7 @@ const stats = [
   { target: 15, suffix: "+", label: "Countries Served" },
 ];
 
+
 export default async function HomePage() {
   const featuredProducts = await prisma.product.findMany({
     where: { featured: true },
@@ -65,40 +72,50 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="py-24 px-6 lg:px-10">
         <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row items-center gap-16">
-          <AnimateIn className="flex-1">
-            <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase">
-              Packaging Solutions with Design DNA
-            </span>
-            <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-[56px] text-ink tracking-[-1.5px] leading-[1.08] mt-6 mb-6">
-              Packaging That Tells Your Brand Story
-            </h1>
-            <p className="text-lg text-body leading-relaxed mb-8 max-w-lg">
-              We design and produce premium packaging for ambitious brands. From rigid boxes to
-              labels, every detail is crafted to make your product unforgettable.
-            </p>
-            <div className="flex gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center h-11 px-6 bg-primary text-on-primary text-sm font-medium rounded-lg hover:bg-primary-active transition-colors"
-              >
-                Start a Project
-              </Link>
-              <Link
-                href="/our-work"
-                className="inline-flex items-center justify-center h-11 px-6 bg-canvas text-ink text-sm font-medium rounded-lg border border-hairline hover:bg-surface-soft transition-colors"
-              >
-                View Our Work
-              </Link>
-            </div>
-          </AnimateIn>
-          <AnimateIn delay={0.2} className="flex-1">
+          <div className="flex-1">
+            <AnimateIn direction="left" amount={16} blur>
+              <span className="text-xs font-medium text-primary tracking-[1.5px] uppercase">
+                Packaging Solutions with Design DNA
+              </span>
+            </AnimateIn>
+            <TextReveal
+              text="Packaging That Tells Your Brand Story"
+              as="h1"
+              className="font-[family-name:var(--font-display)] text-5xl md:text-[56px] text-ink tracking-[-1.5px] leading-[1.08] mt-6 mb-6"
+              delay={0.15}
+              staggerDelay={0.05}
+            />
+            <AnimateIn delay={0.5} blur>
+              <p className="text-lg text-body leading-relaxed mb-8 max-w-lg">
+                We design and produce premium packaging for ambitious brands. From rigid boxes to
+                labels, every detail is crafted to make your product unforgettable.
+              </p>
+            </AnimateIn>
+            <AnimateIn delay={0.7} direction="up" amount={16}>
+              <div className="flex gap-4">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center h-11 px-6 bg-primary text-on-primary text-sm font-medium rounded-lg hover:bg-primary-active transition-colors"
+                >
+                  Start a Project
+                </Link>
+                <Link
+                  href="/our-work"
+                  className="inline-flex items-center justify-center h-11 px-6 bg-canvas text-ink text-sm font-medium rounded-lg border border-hairline hover:bg-surface-soft transition-colors"
+                >
+                  View Our Work
+                </Link>
+              </div>
+            </AnimateIn>
+          </div>
+          <AnimateIn delay={0.2} className="flex-1" blur>
             <HeroAnimation />
           </AnimateIn>
         </div>
       </section>
 
       {/* Value Props */}
-      <section className="py-24 px-6 lg:px-10 bg-surface-soft">
+      <ScrollRevealSection className="py-24 px-6 lg:px-10 bg-surface-soft">
         <div className="max-w-[1200px] mx-auto">
           <SectionHeader
             eyebrow="Why HuiBao"
@@ -107,7 +124,13 @@ export default async function HomePage() {
           />
           <div className="grid md:grid-cols-3 gap-6 mt-12">
             {features.map((feature, i) => (
-              <AnimateIn key={feature.title} delay={i * 0.1}>
+              <AnimateIn
+                key={feature.title}
+                delay={i * 0.12}
+                direction={feature.direction}
+                amount={40}
+                blur
+              >
                 <div className="bg-surface-card rounded-xl p-8 h-full">
                   <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-5">
                     <feature.icon className="w-6 h-6 text-on-primary" />
@@ -119,10 +142,10 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
       {/* Our Work Preview */}
-      <section className="py-24 px-6 lg:px-10">
+      <ScrollRevealSection className="py-24 px-6 lg:px-10">
         <div className="max-w-[1200px] mx-auto">
           <SectionHeader
             eyebrow="Our Work"
@@ -131,7 +154,7 @@ export default async function HomePage() {
           />
           <div className="grid md:grid-cols-3 gap-6 mt-12">
             {categories.map((cat, i) => (
-              <AnimateIn key={cat.slug} delay={i * 0.1}>
+              <AnimateIn key={cat.slug} delay={i * 0.12} rotate={i % 2 === 0 ? -2 : 2} blur>
                 <Link href={`/our-work/${cat.slug}`} className="group block">
                   <div className="bg-canvas border border-hairline rounded-xl overflow-hidden">
                     <div className="aspect-[4/3] bg-surface-card group-hover:bg-surface-cream-strong transition-colors" />
@@ -148,13 +171,13 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
       {/* Stats */}
       <section className="py-16 px-6 lg:px-10 bg-surface-dark">
         <div className="max-w-[1200px] mx-auto flex flex-wrap justify-around gap-8">
           {stats.map((stat, i) => (
-            <AnimateIn key={stat.label} delay={i * 0.1} className="text-center">
+            <AnimateIn key={stat.label} delay={i * 0.1} className="text-center" blur>
               <CountUp
                 target={stat.target}
                 suffix={stat.suffix}
